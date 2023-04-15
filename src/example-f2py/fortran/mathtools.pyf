@@ -1,0 +1,32 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module fortranmodule ! in 
+    interface  ! in :fortranmodule
+        module mathtools ! in :fortranmodule:mathtools.f90
+            integer, private,parameter,optional :: dp=real64
+            subroutine vectorproduct(n,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
+                real(kind=dp) dimension(n),intent(in) :: a
+                real(kind=dp) dimension(n),intent(in),depend(n) :: b
+                real(kind=dp) dimension(n),intent(out),depend(n) :: res
+            end subroutine vectorproduct
+            subroutine vectorsum(n,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
+                real(kind=real32) dimension(n),intent(in) :: a
+                real(kind=real32) dimension(n),intent(in),depend(n) :: b
+                real(kind=real32) dimension(n),intent(out),depend(n) :: res
+            end subroutine vectorsum
+            subroutine saxpy(n,a,x,y) ! in :fortranmodule:mathtools.f90:mathtools
+                integer, optional,intent(in),check(shape(x, 0) == n),depend(x) :: n=shape(x, 0)
+                real(kind=real64) :: a
+                real(kind=real64) dimension(n),intent(in) :: x
+                real(kind=real64) dimension(n),intent(inout),depend(n) :: y
+            end subroutine saxpy
+        end module mathtools
+    end interface 
+end python module fortranmodule
+
+! This file was auto-generated with f2py (version:1.24.2).
+! See:
+! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e
