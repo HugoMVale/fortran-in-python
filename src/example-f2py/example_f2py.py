@@ -1,18 +1,19 @@
 r"""
 Example how to call Fortran code using f2py
 
-Note that f2py tries to be clever and converts subroutines into functions,
-and tries to find optional arguments. As a result, the signature of the
-function in python is not necessarily the original one.
+@note:
+f2py tries to be clever/pythonic and converts subroutines into functions, and 
+tries to find optional arguments. As a result, the signature of the function
+in python is not necessarily the original one.
 
-Steps:
+Build process (see build.bat):
 
 - Quick way: 1-step procedure
-f2py -c filename.f90 -m modulename --fcompiler=gfortran
+f2py -c filename.f90 -m modulename
 
 - Smart way: 2-step procedure
 f2py filename.f90 -m modulename -h filename.pyf  (check signature)
-f2py -c filename.pyc filename.f --fcompiler=gfortran
+f2py -c filename.pyc filename.f
 
 To keep in mind:
 - The dll file MUST be placed next to the pyd file.

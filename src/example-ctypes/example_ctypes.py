@@ -2,9 +2,9 @@
 Example of how to call Fortran code using ctypes
 
 Steps:
- - Write code with c bindings
- - Compile module
- - Create _shared_ library (dll). See commands inside source code
+ - Write code with C bindings.
+ - Compile module.
+ - Create _shared_ library (dll).
 
 To keep in mind:
  - Default return type is int. Other types need to be manually specified.
@@ -16,7 +16,6 @@ Useful info:
 """
 
 from ctypes import CDLL, c_int, c_double, byref, POINTER
-
 import numpy as np
 import os
 
