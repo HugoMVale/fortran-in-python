@@ -3,7 +3,7 @@ module mathtools
    use, intrinsic :: iso_fortran_env, only: real32, real64
    implicit none
    private
-   public :: vectorproduct, vectorsum, saxpy, matrixpartialsum
+   public :: vectorproduct, vectorsum, saxpy, matrixpartialsum, intproduct, intproduct2
 
    integer, parameter :: dp = real64
 
@@ -22,7 +22,7 @@ contains
       integer, intent(in) :: n
       real(real32), intent(in) :: a(n), b(n)
       real(real32), intent(out) :: res(n)
-         res = a + b
+      res = a + b
    end subroutine
 
    subroutine saxpy(n, a, x, y)
@@ -31,7 +31,7 @@ contains
       real(real64) :: a
       real(real64), intent(in) :: x(n)
       real(real64), intent(inout) :: y(n)
-         y = a*x + y
+      y = a*x + y
    end subroutine
 
    subroutine matrixpartialsum(n, m, a, res)
@@ -47,5 +47,20 @@ contains
          end do
       end do
    end subroutine
+
+   integer function intproduct(a, b) result(res)
+      !! Product of two integers
+      !! This will not work as as expected
+      integer, intent(in) :: a, b
+      res = a*b
+   end function
+
+   function intproduct2(a, b)
+      !! Product of two integers
+      !! This will not work as as expected
+      integer, intent(in) :: a, b
+      integer :: intproduct2
+      intproduct2 = a*b
+   end function
 
 end module mathtools

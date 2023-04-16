@@ -27,12 +27,22 @@ python module fortranmodule ! in
                 integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
                 integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
                 real(kind=real64) dimension(n,m),intent(in) :: a
-                real(kind=real64) dimension(n,m),intent(out),depend(m,n) :: res
+                real(kind=real64) dimension(n,m),intent(out),depend(n,m) :: res
             end subroutine matrixpartialsum
+            function intproduct(a,b) result (res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer intent(in) :: a
+                integer intent(in) :: b
+                real :: res
+            end function intproduct
+            function intproduct2(a,b) ! in :fortranmodule:mathtools.f90:mathtools
+                integer intent(in) :: a
+                integer intent(in) :: b
+                integer :: intproduct2
+            end function intproduct2
         end module mathtools
     end interface 
 end python module fortranmodule
 
-! This file was auto-generated with f2py (version:1.24.2).
+! This file was auto-generated with f2py (version:1.23.5).
 ! See:
 ! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e
