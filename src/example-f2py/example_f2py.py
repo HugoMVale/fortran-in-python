@@ -13,7 +13,6 @@ f2py -c filename.f90 -m modulename
 
 - Smart way: 2-step procedure
 f2py filename.f90 -m modulename -h filename.pyf  (check signature)
-f2py -c filename.pyc filename.f
 
 To keep in mind:
 - The dll file MUST be placed next to the pyd file.
@@ -29,30 +28,48 @@ import numpy as np
 # %% vectorsum (single precision)
 
 # note how f2py changed the signature
-print(mathtools.vectorsum.__doc__)
+print('\n', mathtools.vectorsum.__doc__)
 
 a = np.arange(1, 6, dtype=np.float64)
 b = a + 1
 
-r1 = mathtools.vectorsum(a, b)
-print('result type: ', r1.dtype)
-print('vectorsum: ', r1)
+result = mathtools.vectorsum(a, b)
+
+print('result type: ', result.dtype)
+print('result: ', result)
 
 # %% vectorproduct (double precision)
 
-print(mathtools.vectorproduct.__doc__)
+print('\n'*3, mathtools.vectorproduct.__doc__)
 
-r2 = mathtools.vectorproduct(a, b)
-print('result type: ', r2.dtype)
-print('vectorproduct: ', r2)
+result = mathtools.vectorproduct(a, b)
+
+print('result type: ', result.dtype)
+print('result: ', result)
 
 # %% saxpy (result returned via argument update)
 
-print(mathtools.saxpy.__doc__)
+print('\n'*3, mathtools.saxpy.__doc__)
 
 a = 41
 x = np.ones(5, dtype=np.float64)
 y = np.ones(5, dtype=np.float64)
 
 _ = mathtools.saxpy(a, x, y)
-print('saxpy: ', y)
+
+print('result (y): ', y)
+
+# %% matrixpartialsum
+# The input may have order='C' or order='F', but the output has order='F'.
+
+print('\n'*3, mathtools.matrixpartialsum.__doc__)
+
+N = 2
+M = 3
+a = np.ones((N, M), dtype=np.float64, order='C')
+
+result = mathtools.matrixpartialsum(a)
+
+print('result type: ', result.dtype)
+print('result has fortran order: ', np.isfortran(result))
+print('result: \n', result)

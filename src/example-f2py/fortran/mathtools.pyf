@@ -23,6 +23,12 @@ python module fortranmodule ! in
                 real(kind=real64) dimension(n),intent(in) :: x
                 real(kind=real64) dimension(n),intent(inout),depend(n) :: y
             end subroutine saxpy
+            subroutine matrixpartialsum(n,m,a,res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
+                integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
+                real(kind=real64) dimension(n,m),intent(in) :: a
+                real(kind=real64) dimension(n,m),intent(out),depend(m,n) :: res
+            end subroutine matrixpartialsum
         end module mathtools
     end interface 
 end python module fortranmodule

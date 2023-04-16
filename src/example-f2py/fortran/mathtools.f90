@@ -3,7 +3,7 @@ module mathtools
    use, intrinsic :: iso_fortran_env, only: real32, real64
    implicit none
    private
-   public :: vectorproduct, vectorsum, saxpy
+   public :: vectorproduct, vectorsum, saxpy, matrixpartialsum
 
    integer, parameter :: dp = real64
 
@@ -32,6 +32,20 @@ contains
       real(real64), intent(in) :: x(n)
       real(real64), intent(inout) :: y(n)
          y = a*x + y
+   end subroutine
+
+   subroutine matrixpartialsum(n, m, a, res)
+      !! Partial sum of matrix elements (explicit shape)
+      integer, intent(in) :: n, m
+      real(real64), intent(in) :: a(n, m)
+      real(real64), intent(out) :: res(n, m)
+      integer :: i, j
+      ! Dumb algorithm
+      do j=1,m
+         do i=1,n
+            res(i,j) = sum(a(1:i,1:j))
+         end do
+      end do
    end subroutine
 
 end module mathtools
