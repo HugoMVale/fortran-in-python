@@ -24,12 +24,20 @@ import os
 here = os.path.dirname(os.path.realpath(__file__))
 mathtools = CDLL(os.path.join(here, './fortran/mathtools.dll'))
 
-# %% intproduct
+# %% intproduct (by reference)
 
 a = 3
 b = 4
 result = mathtools.intproduct(byref(c_int(a)), byref(c_int(b)))
 print("intproduct: ", result)
+
+
+# %% intproduct (by value)
+
+a = 3
+b = 4
+result = mathtools.intproduct_byvalue(c_int(a), c_int(b))
+print("intproduct_byvalue: ", result)
 
 # %% doubleproduct
 

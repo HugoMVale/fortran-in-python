@@ -20,18 +20,22 @@ contains
       call vectorproduct(a, b, res)
    end subroutine
 
-   function intproduct(a, b) bind(c, name='intproduct')
+   integer(c_int) function intproduct(a, b) result(res) bind(c)
       !! Product of two integers directly in C types
       integer(c_int), intent(in) :: a, b
-      integer(c_int) :: intproduct
-      intproduct = a*b
+      res = a*b
    end function
 
-   function doubleproduct(a, b) bind(c, name='doubleproduct')
+   integer(c_int) function intproduct_byvalue(a, b) result(res) bind(c)
+      !! Product of two integers directly in C types
+      integer(c_int), value, intent(in) :: a, b
+      res = a*b
+   end function
+
+   real(c_double) function doubleproduct(a, b) result(res) bind(c)
       !! Product of two doubles directly in C types
       real(c_double), intent(in) :: a, b
-      real(c_double) :: doubleproduct
-      doubleproduct = a*b
+      res = a*b
    end function
 
 end module mathtools
