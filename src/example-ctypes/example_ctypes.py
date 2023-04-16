@@ -24,15 +24,14 @@ import os
 here = os.path.dirname(os.path.realpath(__file__))
 mathtools = CDLL(os.path.join(here, './fortran/mathtools.dll'))
 
-# %% intproduct (by reference)
+# %% intproduct (args passed by reference)
 
 a = 3
 b = 4
 result = mathtools.intproduct(byref(c_int(a)), byref(c_int(b)))
 print("intproduct: ", result)
 
-
-# %% intproduct (by value)
+# %% intproduct (args passed by value)
 
 a = 3
 b = 4
@@ -47,7 +46,7 @@ mathtools.doubleproduct.restype = c_double
 result = mathtools.doubleproduct(byref(c_double(a)), byref(c_double(b)))
 print("doubleproduct: ", result)
 
-# %% vectorproduct
+# %% vectorproduct (args passed as pointers to np arrays)
 
 N = 10
 a = np.asarray([i for i in range(1, N+1)], dtype=c_double)
