@@ -5,40 +5,59 @@ python module fortranmodule ! in
     interface  ! in :fortranmodule
         module mathtools ! in :fortranmodule:mathtools.f90
             integer, private,parameter,optional :: dp=real64
-            subroutine vectorproduct(n,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
-                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
-                real(kind=dp) dimension(n),intent(in) :: a
-                real(kind=dp) dimension(n),intent(in),depend(n) :: b
-                real(kind=dp) dimension(n),intent(out),depend(n) :: res
-            end subroutine vectorproduct
+            subroutine intsum(a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer intent(in) :: a
+                integer intent(in) :: b
+                integer intent(out) :: res
+            end subroutine intsum
+            subroutine real4sum(a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                real(kind=real32) intent(in) :: a
+                real(kind=real32) intent(in) :: b
+                real(kind=real32) intent(out) :: res
+            end subroutine real4sum
+            subroutine real8sum(a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                real(kind=real64) intent(in) :: a
+                real(kind=real64) intent(in) :: b
+                real(kind=real64) intent(out) :: res
+            end subroutine real8sum
             subroutine vectorsum(n,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
                 integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
                 real(kind=real32) dimension(n),intent(in) :: a
                 real(kind=real32) dimension(n),intent(in),depend(n) :: b
                 real(kind=real32) dimension(n),intent(out),depend(n) :: res
             end subroutine vectorsum
+            subroutine matrixsum(n,m,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
+                integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
+                real(kind=dp) dimension(n,m),intent(in) :: a
+                real(kind=dp) dimension(n,m),intent(in),depend(n,m) :: b
+                real(kind=dp) dimension(n,m),intent(out),depend(n,m) :: res
+            end subroutine matrixsum
+            subroutine matrixtimesvector(n,m,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
+                integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
+                real(kind=real64) dimension(n,m),intent(in) :: a
+                real(kind=real64) dimension(m),intent(in),depend(m) :: b
+                real(kind=real64) dimension(n),intent(out),depend(n) :: res
+            end subroutine matrixtimesvector
             subroutine saxpy(n,a,x,y) ! in :fortranmodule:mathtools.f90:mathtools
                 integer, optional,intent(in),check(shape(x, 0) == n),depend(x) :: n=shape(x, 0)
                 real(kind=real64) :: a
                 real(kind=real64) dimension(n),intent(in) :: x
                 real(kind=real64) dimension(n),intent(inout),depend(n) :: y
             end subroutine saxpy
-            subroutine matrixpartialsum(n,m,a,res) ! in :fortranmodule:mathtools.f90:mathtools
-                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
-                integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
-                real(kind=real64) dimension(n,m),intent(in) :: a
-                real(kind=real64) dimension(n,m),intent(out),depend(n,m) :: res
-            end subroutine matrixpartialsum
-            function intproduct(a,b) result (res) ! in :fortranmodule:mathtools.f90:mathtools
-                integer intent(in) :: a
-                integer intent(in) :: b
-                real :: res
-            end function intproduct
-            function intproduct2(a,b) ! in :fortranmodule:mathtools.f90:mathtools
-                integer intent(in) :: a
-                integer intent(in) :: b
-                integer :: intproduct2
-            end function intproduct2
+            subroutine averagefnc(fnc,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                external fnc
+                real(kind=dp) intent(in) :: a
+                real(kind=dp) intent(in) :: b
+                real(kind=dp) intent(out) :: res
+                interface  ! in :fortranmodule:mathtools.f90:mathtools:averagefnc
+                    function fnc(x) ! in :fortranmodule:mathtools.f90:mathtools:averagefnc:unknown_interface
+                        real(kind=dp) intent(in) :: x
+                        real(kind=dp) :: fnc
+                    end function fnc
+                end interface 
+            end subroutine averagefnc
         end module mathtools
     end interface 
 end python module fortranmodule
