@@ -1,5 +1,6 @@
 module mathtools
    !! A simple module to learn how to use f2py.
+   !! f2py is restricted to fortran<=95: no derived data types, no abstract interfaces, etc.
    use, intrinsic :: iso_fortran_env, only: real32, real64
    implicit none
    private
