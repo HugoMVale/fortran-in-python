@@ -4,6 +4,7 @@
 python module fortranmodule ! in 
     interface  ! in :fortranmodule
         module mathtools ! in :fortranmodule:mathtools.f90
+            integer, private,parameter,optional :: sp=real32
             integer, private,parameter,optional :: dp=real64
             subroutine intsum(a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
                 integer intent(in) :: a
@@ -20,19 +21,19 @@ python module fortranmodule ! in
                 real(kind=real64) intent(in) :: b
                 real(kind=real64) intent(out) :: res
             end subroutine real8sum
-            subroutine vectorsum(n,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+            subroutine vector4sum(n,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
                 integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
-                real(kind=real32) dimension(n),intent(in) :: a
-                real(kind=real32) dimension(n),intent(in),depend(n) :: b
-                real(kind=real32) dimension(n),intent(out),depend(n) :: res
-            end subroutine vectorsum
-            subroutine matrixsum(n,m,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
+                real(kind=sp) dimension(n),intent(in) :: a
+                real(kind=sp) dimension(n),intent(in),depend(n) :: b
+                real(kind=sp) dimension(n),intent(out),depend(n) :: res
+            end subroutine vector4sum
+            subroutine matrix8sum(n,m,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
                 integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
                 integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
                 real(kind=dp) dimension(n,m),intent(in) :: a
-                real(kind=dp) dimension(n,m),intent(in),depend(n,m) :: b
-                real(kind=dp) dimension(n,m),intent(out),depend(n,m) :: res
-            end subroutine matrixsum
+                real(kind=dp) dimension(n,m),intent(in),depend(m,n) :: b
+                real(kind=dp) dimension(n,m),intent(out),depend(m,n) :: res
+            end subroutine matrix8sum
             subroutine matrixtimesvector(n,m,a,b,res) ! in :fortranmodule:mathtools.f90:mathtools
                 integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
                 integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
@@ -62,6 +63,6 @@ python module fortranmodule ! in
     end interface 
 end python module fortranmodule
 
-! This file was auto-generated with f2py (version:1.23.5).
+! This file was auto-generated with f2py (version:1.24.3).
 ! See:
 ! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e

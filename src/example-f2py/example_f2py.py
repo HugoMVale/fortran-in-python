@@ -46,25 +46,25 @@ print('result type: ', type(result))
 print('result: ', result)
 
 
-# %% vectorsum
+# %% vector4sum
 
-print('\n'*3, mathtools.vectorsum.__doc__)
+print('\n'*3, mathtools.vector4sum.__doc__)
 
 a = np.arange(1, 6, dtype=np.float32)
 b = a + 1
 
-result = mathtools.vectorsum(a, b)
+result = mathtools.vector4sum(a, b)
 print('result type: ', result.dtype)
 print('result: \n', result)
 
-# %% matrixsum
+# %% matrix8sum
 
-print('\n'*3, mathtools.matrixsum.__doc__)
+print('\n'*3, mathtools.matrix8sum.__doc__)
 
 a = np.ones((2, 3), dtype=np.float64)
 b = 1/2*np.ones_like(a)
 
-result = mathtools.matrixsum(a, b)
+result = mathtools.matrix8sum(a, b)
 print('result type: ', result.dtype)
 print('result: \n', result)
 
@@ -72,8 +72,8 @@ print('result: \n', result)
 
 print('\n'*3, mathtools.matrixtimesvector.__doc__)
 
-a = np.ones((2, 3), dtype=np.float64)
-b = 1/2*np.ones(3, dtype=np.float64)
+a = np.ones((4, 42), dtype=np.float64)
+b = np.ones(42, dtype=np.float64)
 
 result = mathtools.matrixtimesvector(a, b)
 
