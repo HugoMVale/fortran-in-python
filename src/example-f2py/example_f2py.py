@@ -17,84 +17,84 @@ Sources:
 
 """
 
-from fortranmodule import mathtools
+from fortranmodule import fmodule
 import numpy as np
 
 # %% intsum
 
-print('\n'*3, mathtools.intsum.__doc__)
+print('\n'*3, fmodule.intsum.__doc__)
 a = 2
 b = 3
-result = mathtools.intsum(a, b)
+result = fmodule.intsum(a, b)
 print('result type: ', type(result))
 print('result: ', result)
 
 # %% real4sum
 
-print('\n'*3, mathtools.real4sum.__doc__)
+print('\n'*3, fmodule.real4sum.__doc__)
 
-result = mathtools.real4sum(a, b)
+result = fmodule.real4sum(a, b)
 print('result type: ', type(result))
 print('result: ', result)
 
 # %% real8sum
 
-print('\n'*3, mathtools.real8sum.__doc__)
+print('\n'*3, fmodule.real8sum.__doc__)
 
-result = mathtools.real8sum(a, b)
+result = fmodule.real8sum(a, b)
 print('result type: ', type(result))
 print('result: ', result)
 
 
 # %% vector4sum
 
-print('\n'*3, mathtools.vector4sum.__doc__)
+print('\n'*3, fmodule.vector4sum.__doc__)
 
 a = np.arange(1, 6, dtype=np.float32)
 b = a + 1
 
-result = mathtools.vector4sum(a, b)
+result = fmodule.vector4sum(a, b)
 print('result type: ', result.dtype)
 print('result: \n', result)
 
 # %% matrix8sum
 
-print('\n'*3, mathtools.matrix8sum.__doc__)
+print('\n'*3, fmodule.matrix8sum.__doc__)
 
 a = np.ones((2, 3), dtype=np.float64)
 b = 1/2*np.ones_like(a)
 
-result = mathtools.matrix8sum(a, b)
+result = fmodule.matrix8sum(a, b)
 print('result type: ', result.dtype)
 print('result: \n', result)
 
 # %% matrixtimesvector
 
-print('\n'*3, mathtools.matrixtimesvector.__doc__)
+print('\n'*3, fmodule.matrixtimesvector.__doc__)
 
 a = np.ones((4, 42), dtype=np.float64)
 b = np.ones(42, dtype=np.float64)
 
-result = mathtools.matrixtimesvector(a, b)
+result = fmodule.matrixtimesvector(a, b)
 
 print('result: \n', result)
 
 # %% saxpy
 # result returned via argument update
 
-print('\n'*3, mathtools.saxpy.__doc__)
+print('\n'*3, fmodule.saxpy.__doc__)
 
 a = 40
 x = np.ones(5, dtype=np.float64)
 y = 2*np.ones(5, dtype=np.float64)
 
-_ = mathtools.saxpy(a, x, y)
+_ = fmodule.saxpy(a, x, y)
 print('result (y): ', y)
 
 # %% averagefnc
 # example with callback function
 
-print('\n'*3, mathtools.averagefnc.__doc__)
+print('\n'*3, fmodule.averagefnc.__doc__)
 
 
 def fx(x: float): return x**2
@@ -102,5 +102,5 @@ def fx(x: float): return x**2
 
 a = 1
 b = 2
-result = mathtools.averagefnc(fx, a, b)
+result = fmodule.averagefnc(fx, a, b)
 print('result: ', result)

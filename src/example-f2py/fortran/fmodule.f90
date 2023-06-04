@@ -1,4 +1,4 @@
-module mathtools
+module fmodule
    !! A simple module to learn how to use f2py.
    !! f2py is restricted to fortran<=95: no derived data types, no abstract interfaces, etc.
    !! Real kind specification is intentionally mixed, to show that kind mapping works. 
@@ -88,4 +88,4 @@ contains
       res = (fnc(a) + fnc(b))/2
    end subroutine
 
-end module mathtools
+end module fmodule
