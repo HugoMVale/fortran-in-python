@@ -1,13 +1,14 @@
 r"""
-Example how to call Fortran code using f2py.
+Example how to invoke Fortran code using f2py.
 f2py makes it possible to call Fortran 77/90/95 external subroutines and
 Fortran 90/95 module subroutines. Derived data types are not supported.
 
 @note:
 - f2py tries to be clever/pythonic and converts subroutines into functions, and
 tries to find optional arguments. As a result, the signature of the function
-in python is not necessarily the original one.
-- abstract interfaces are not accepted (fortran 2003).
+in python is not necessarily the original one. The actual signature is exposed
+in __doc__.
+- Abstract interfaces are not accepted (fortran 2003).
 
 Build process:
  - See ./fortran/build.bat
@@ -103,4 +104,14 @@ def fx(x: float): return x**2
 a = 1
 b = 2
 result = fmodule.averagefnc(fx, a, b)
+print('result: ', result)
+
+
+# %% applyfnctomatrix
+# example with callback function with vector argument
+
+print('\n'*3, fmodule.applyfnctomatrix.__doc__)
+
+a = np.arange(1, 7, dtype=np.float64).reshape(2, 3)
+result = fmodule.applyfnctomatrix(fx, a)
 print('result: ', result)

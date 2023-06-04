@@ -59,6 +59,20 @@ python module fortranmodule ! in
                     end function fnc
                 end interface 
             end subroutine averagefnc
+            subroutine applyfnctomatrix(fnc,n,m,a,res) ! in :fortranmodule:fmodule.f90:fmodule
+                external fnc
+                integer, optional,intent(in),check(shape(a, 0) == n),depend(a) :: n=shape(a, 0)
+                integer, optional,intent(in),check(shape(a, 1) == m),depend(a) :: m=shape(a, 1)
+                real(kind=dp) dimension(n,m),intent(in) :: a
+                real(kind=dp) dimension(n,m),intent(out),depend(n,m) :: res
+                interface  ! in :fortranmodule:fmodule.f90:fmodule:applyfnctomatrix
+                    subroutine fnc(s,x,u) ! in :fortranmodule:fmodule.f90:fmodule:applyfnctomatrix:unknown_interface
+                        integer, optional,intent(in),check(shape(x, 0) == s),depend(x) :: s=shape(x, 0)
+                        real(kind=dp) dimension(s),intent(in) :: x
+                        real(kind=dp) dimension(s),intent(out),depend(s) :: u
+                    end subroutine fnc
+                end interface 
+            end subroutine applyfnctomatrix
         end module fmodule
     end interface 
 end python module fortranmodule

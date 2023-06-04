@@ -6,7 +6,7 @@ module fmodule
    implicit none
    private
    public :: intsum, real4sum, real8sum, vector4sum, matrix8sum, saxpy, matrixtimesvector
-   public :: averagefnc
+   public :: averagefnc, applyfnctomatrix
 
    integer, parameter :: sp = real32
    integer, parameter :: dp = real64
@@ -86,6 +86,25 @@ contains
       real(dp), intent(in) :: a, b
       real(dp), intent(out) :: res
       res = (fnc(a) + fnc(b))/2
+   end subroutine
+
+   subroutine applyfnctomatrix(fnc, n, m, a, res)
+      !! Apply a function column-wise to a matrix
+      interface
+         subroutine fnc(s, x, u)
+            import dp
+            integer, intent(in) :: s
+            real(dp), intent(in) :: x(s)
+            real(dp), intent(out) :: u(s)
+         end subroutine
+      end interface
+      integer, intent(in) :: n, m
+      real(dp), intent(in) :: a (n, m)
+      real(dp), intent(out) :: res(n, m)
+      integer :: j
+      do j=1,m
+            call fnc(n, a(:,j), res(:,j))
+      end do
    end subroutine
 
 end module fmodule
