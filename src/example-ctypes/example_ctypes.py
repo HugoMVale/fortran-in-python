@@ -14,6 +14,7 @@ Useful info:
  - https://doc.sagemath.org/html/en/thematic_tutorials/numerical_sage/ctypes.html
  - https://github.com/daniel-de-vries/fortran-ctypes-python-example
  - https://gist.github.com/Nican/5198719
+ - https://numba.pydata.org/numba-doc/latest/user/cfunc.html
 """
 
 from ctypes import CDLL, c_int, c_float, c_double, byref, POINTER, CFUNCTYPE
