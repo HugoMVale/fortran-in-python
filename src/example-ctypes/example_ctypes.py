@@ -13,10 +13,12 @@ To keep in mind:
 Useful info:
  - https://doc.sagemath.org/html/en/thematic_tutorials/numerical_sage/ctypes.html
  - https://github.com/daniel-de-vries/fortran-ctypes-python-example
+ - https://gist.github.com/Nican/5198719
 """
 
-from ctypes import CDLL, c_int, c_float, c_double, c_void_p, byref, POINTER, CFUNCTYPE
+from ctypes import CDLL, c_int, c_float, c_double, byref, POINTER, CFUNCTYPE
 import numpy as np
+from  numba import cfunc, types
 import os
 
 
@@ -117,22 +119,40 @@ fmodule.saxpy(c_int(n),
               y.ctypes.data_as(doubleptr))
 print("saxpy: ", y)
 
-# %% averagefnc
+# %% averagefnc with Python callback
 
 # Define the function return type
 averagefnc = fmodule.averagefnc_explicit
 averagefnc.restype = c_double
 
 # Define the callback function, with its prototype
-# Note x[0], because x is passed as pointer 
+# Since x is passed as pointer, it must be dereferenced.
+
 @CFUNCTYPE(c_double, POINTER(c_double))
-def fnc(x):
+def fnc1(x):
     return x[0]**2
+
 
 a = 10.
 b = 20.
 
-result = fmodule.averagefnc_explicit(fnc,
+result = fmodule.averagefnc_explicit(fnc1,
                                      byref(c_double(a)),
                                      byref(c_double(b)))
-print("averagefnc: ", result)
+print("averagefnc with Python callback: ", result)
+
+
+# %% averagefnc with Numba callback
+
+# Define the callback function, with its prototype
+# Since x is passed as pointer, it must be dereferenced.
+
+@cfunc(types.double(types.CPointer(types.double)))
+def fnc2(x):
+    return x[0]**2
+
+
+result = fmodule.averagefnc_explicit(fnc2.ctypes,
+                                     byref(c_double(a)),
+                                     byref(c_double(b)))
+print("averagefnc with numba callback: ", result)
