@@ -1,5 +1,5 @@
 """
-Example of how to call Fortran code using ctypes
+Example of how to invoke Fortran code using ctypes.
 
 Steps:
  - Write code with C bindings.
@@ -9,6 +9,8 @@ Steps:
 To keep in mind:
  - Default return type is int. Other types need to be manually specified.
  - By default, fortran expects arguments passed by reference.
+ - Callbacks can be a bit tricky because of pointers. By comparison, this is
+   where you see how convenient f2py is.
 
 Useful info:
  - https://doc.sagemath.org/html/en/thematic_tutorials/numerical_sage/ctypes.html
@@ -77,10 +79,11 @@ print("vector4sum: ", c)
 
 # %% matrix8sum
 # double array args passed as pointers to np arrays
+# matrix should preferably have Fortran order
 
 n = 2
 m = 3
-a = np.ones((n, m), dtype=c_double)
+a = np.ones((n, m), dtype=c_double, order='F')
 b = 1/2*np.ones_like(a)
 c = np.empty_like(a)
 doubleptr = POINTER(c_double)
@@ -92,10 +95,11 @@ print("matrix8sum: ", c)
 
 # %% matrixtimesvector
 # double array args passed as pointers to np arrays
+# matrix should preferably have Fortran order
 
 n = 2
 m = 3
-a = np.ones((n, m), dtype=c_double)
+a = np.ones((n, m), dtype=c_double, order='F')
 b = 2*np.ones(m, dtype=c_double)
 c = np.empty(n, dtype=c_double)
 doubleptr = POINTER(c_double)
@@ -120,7 +124,8 @@ fmodule.saxpy(c_int(n),
               y.ctypes.data_as(doubleptr))
 print("saxpy: ", y)
 
-# %% averagefnc with Python callback
+# %% averagefnc
+# with Python callback
 
 # Define the function return type
 averagefnc = fmodule.averagefnc_explicit
@@ -143,10 +148,8 @@ result = fmodule.averagefnc_explicit(fnc1,
 print("averagefnc with Python callback: ", result)
 
 
-# %% averagefnc with Numba callback
-
-# Define the callback function, with its prototype
-# Since x is passed as pointer, it must be dereferenced.
+# %% averagefnc
+# with Numba callback
 
 @cfunc(types.double(types.CPointer(types.double)))
 def fnc2(x):

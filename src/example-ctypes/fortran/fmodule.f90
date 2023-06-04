@@ -1,5 +1,5 @@
 module fmodule
-   !! A module with various toy functions and subroutines to learn how to invoke fortran code
+   !! A module with various toy functions and subroutines to learn how to invoke Fortran code
    !! from python.
    use, intrinsic :: iso_fortran_env, only: real32, real64
    implicit none
