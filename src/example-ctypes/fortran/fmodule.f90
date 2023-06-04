@@ -1,5 +1,6 @@
-module mathtools
-   !! A simple module to learn how to call fortran code from python.
+module fmodule
+   !! A module with various toy functions and subroutines to learn how to invoke fortran code
+   !! from python.
    use, intrinsic :: iso_fortran_env, only: real32, real64
    implicit none
    private
@@ -67,7 +68,7 @@ contains
 
    real(dp) function averagefnc(fnc, a, b) result(res)
       !! Average of function with explicit interface
-      interface 
+      interface
          function fnc(x)
             import dp
             real(dp), intent(in) :: x
@@ -78,4 +79,4 @@ contains
       res = (fnc(a) + fnc(b))/2
    end function
 
-end module mathtools
+end module fmodule

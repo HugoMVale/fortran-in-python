@@ -15,50 +15,47 @@ Useful info:
  - https://github.com/daniel-de-vries/fortran-ctypes-python-example
 """
 
-from ctypes import CDLL, c_int, c_float, c_double, byref, POINTER, CFUNCTYPE
+from ctypes import CDLL, c_int, c_float, c_double, c_void_p, byref, POINTER, CFUNCTYPE
 import numpy as np
 import os
 
 
-# %% Import dll
+# %% Load shared library with C-bindings
 here = os.path.dirname(os.path.realpath(__file__))
-mathtools = CDLL(os.path.join(here, './fortran/mathtools.dll'))
+fmodule = CDLL(os.path.join(here, './fortran/fmodule.dll'))
+
+# %% intsum
+
+a = 3
+b = 4
+result = fmodule.intsum(c_int(a), c_int(b))
+print("intsum: ", result)
 
 # %% intsum
 # int args passed by reference
 
 a = 3
 b = 4
-result = mathtools.intsum_c(byref(c_int(a)), byref(c_int(b)))
-print("intsum: ", result)
-
-# %% intsum
-# int args passed by value
-
-a = 3
-b = 4
-result = mathtools.intsum_byvalue_c(c_int(a), c_int(b))
-print("intsum_byvalue: ", result)
+result = fmodule.intsum_byref(byref(c_int(a)), byref(c_int(b)))
+print("intsum_byref: ", result)
 
 # %% real4sum
-# float args passed by reference
 # float return type
 
 a = 3e0
 b = 4e0
-mathtools.real4sum_c.restype = c_float
-result = mathtools.real4sum_c(byref(c_float(a)), byref(c_float(b)))
+fmodule.real4sum.restype = c_float
+result = fmodule.real4sum(c_float(a), c_float(b))
 print("real4sum: ", result)
 
 
 # %% real8sum
-# double args passed by reference
 # double return type
 
 a = 3e0
 b = 4e0
-mathtools.real8sum_c.restype = c_double
-result = mathtools.real8sum_c(byref(c_double(a)), byref(c_double(b)))
+fmodule.real8sum.restype = c_double
+result = fmodule.real8sum(c_double(a), c_double(b))
 print("real8sum: ", result)
 
 # %% vector4sum
@@ -69,13 +66,13 @@ a = np.asarray([i for i in range(1, N+1)], dtype=c_float)
 b = np.asarray([i**2 for i in range(1, N+1)], dtype=c_float)
 c = np.empty_like(a)
 floatptr = POINTER(c_float)
-mathtools.vector4sum_c(byref(c_int(N)),
-                       a.ctypes.data_as(floatptr),
-                       b.ctypes.data_as(floatptr),
-                       c.ctypes.data_as(floatptr))
+fmodule.vector4sum(c_int(N),
+                   a.ctypes.data_as(floatptr),
+                   b.ctypes.data_as(floatptr),
+                   c.ctypes.data_as(floatptr))
 print("vector4sum: ", c)
 
-# %% matrix8sum 
+# %% matrix8sum
 # double array args passed as pointers to np arrays
 
 n = 2
@@ -84,10 +81,10 @@ a = np.ones((n, m), dtype=c_double)
 b = 1/2*np.ones_like(a)
 c = np.empty_like(a)
 doubleptr = POINTER(c_double)
-mathtools.matrix8sum_c(byref(c_int(n)), byref(c_int(m)),
-                       a.ctypes.data_as(doubleptr),
-                       b.ctypes.data_as(doubleptr),
-                       c.ctypes.data_as(doubleptr))
+fmodule.matrix8sum(c_int(n), c_int(m),
+                   a.ctypes.data_as(doubleptr),
+                   b.ctypes.data_as(doubleptr),
+                   c.ctypes.data_as(doubleptr))
 print("matrix8sum: ", c)
 
 # %% matrixtimesvector
@@ -99,10 +96,10 @@ a = np.ones((n, m), dtype=c_double)
 b = 2*np.ones(m, dtype=c_double)
 c = np.empty(n, dtype=c_double)
 doubleptr = POINTER(c_double)
-mathtools.matrixtimesvector_c(byref(c_int(n)), byref(c_int(m)),
-                              a.ctypes.data_as(doubleptr),
-                              b.ctypes.data_as(doubleptr),
-                              c.ctypes.data_as(doubleptr))
+fmodule.matrixtimesvector(c_int(n), c_int(m),
+                          a.ctypes.data_as(doubleptr),
+                          b.ctypes.data_as(doubleptr),
+                          c.ctypes.data_as(doubleptr))
 print("matrixtimesvector: ", c)
 
 # %% saxpy
@@ -114,24 +111,28 @@ a = 40.
 x = np.ones(n, dtype=c_double)
 y = 2*np.ones(n, dtype=c_double)
 doubleptr = POINTER(c_double)
-mathtools.saxpy_c(byref(c_int(n)),
-                  byref(c_double(a)),
-                  x.ctypes.data_as(doubleptr),
-                  y.ctypes.data_as(doubleptr))
+fmodule.saxpy(c_int(n),
+              c_double(a),
+              x.ctypes.data_as(doubleptr),
+              y.ctypes.data_as(doubleptr))
 print("saxpy: ", y)
 
 # %% averagefnc
-# Does not work yet! :)
 
-
-@CFUNCTYPE(c_double, c_double)
-def fnc(x):
-    return x**2
-
-
-a = 1.
-b = 2.
-averagefnc = mathtools.averagefnc_c
+# Define the function return type
+averagefnc = fmodule.averagefnc_explicit
 averagefnc.restype = c_double
-result = averagefnc(fnc, byref(c_double(a)), byref(c_double(b)))
+
+# Define the callback function, with its prototype
+# Note x[0], because x is passed as pointer 
+@CFUNCTYPE(c_double, POINTER(c_double))
+def fnc(x):
+    return x[0]**2
+
+a = 10.
+b = 20.
+
+result = fmodule.averagefnc_explicit(fnc,
+                                     byref(c_double(a)),
+                                     byref(c_double(b)))
 print("averagefnc: ", result)
