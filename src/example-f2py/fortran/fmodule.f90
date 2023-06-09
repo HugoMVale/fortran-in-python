@@ -1,6 +1,6 @@
 module fmodule
-   !! A simple module to learn how to use f2py.
-   !! f2py is restricted to fortran<=95: no derived data types, no abstract interfaces, etc.
+   !! A simple module to learn how to use f2py/f90wrap.
+   !! f2py is restricted to Fortran<=95: no derived data types, no abstract interfaces, etc.
    !! Real kind specification is intentionally mixed, to show that kind mapping works. 
    use, intrinsic :: iso_fortran_env, only: real32, real64
    implicit none

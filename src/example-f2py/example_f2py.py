@@ -6,9 +6,9 @@ Fortran 90/95 module subroutines. Derived data types are not supported.
 @note:
 - f2py tries to be clever/pythonic and converts subroutines into functions, and
 tries to find optional arguments. As a result, the signature of the function
-in python is not necessarily the original one. The actual signature is exposed
+in Python is not necessarily the original one. The actual signature is exposed
 in __doc__.
-- Abstract interfaces are not accepted (fortran 2003).
+- Abstract interfaces are not accepted (Fortran 2003).
 
 Build process:
  - See ./fortran/build.bat
