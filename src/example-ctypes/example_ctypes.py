@@ -1,4 +1,4 @@
-"""
+r"""
 Example of how to invoke Fortran code using ctypes.
 
 Steps:
@@ -8,7 +8,7 @@ Steps:
 
 To keep in mind:
  - Default return type is int. Other types need to be manually specified.
- - By default, fortran expects arguments passed by reference.
+ - By default, Fortran expects arguments passed by reference.
  - Callbacks can be a bit tricky because of pointers. By comparison, this is
    where you see how convenient f2py is.
 
@@ -21,7 +21,7 @@ Useful info:
 
 from ctypes import CDLL, c_int, c_float, c_double, byref, POINTER, CFUNCTYPE
 import numpy as np
-from  numba import cfunc, types
+from numba import cfunc, types
 import os
 
 
